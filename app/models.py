@@ -1,3 +1,5 @@
+from fcntl import F_SEAL_SEAL
+from inspect import classify_class_attrs
 from sqlite3 import Timestamp
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
@@ -14,6 +16,7 @@ class Post(Base):
     content = Column(String, nullable=False)
     published = Column(Boolean, server_default="True", nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text("now()"))
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
 class User(Base):
     __tablename__ = "users"
